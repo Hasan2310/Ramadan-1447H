@@ -8,7 +8,7 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "update": "git add . && git commit -m 'Update' && git push arigin main"
+    "update": "git add . && git commit -m 'Update' && git push origin main"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.2.1",
