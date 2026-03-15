@@ -30,7 +30,7 @@ export default function Landing() {
       className="relative w-full h-[100dvh] overflow-hidden bg-cover bg-center flex items-center justify-center"
       style={{ backgroundImage: "url('/Bg.jpg')" }}
     >
-      <div className="absolute inset-0 flex mt-40 flex-col px-6 items-center">
+      <div className="absolute inset-0 flex mt-25 flex-col px-6 items-center">
         <AnimatePresence mode="wait">
 
           {/* SCENE 1: INPUT */}
@@ -93,7 +93,7 @@ export default function Landing() {
                   initial={{ width: "100%" }}
                   animate={{ width: "0%" }}
                   transition={{ 
-                    duration: 8, // Durasi 8 detik
+                    duration: 7.8, // Durasi 8 detik
                     ease: "linear" // Wajib linear supaya pergerakannya konstan/smooth
                   }}
                   className="h-full bg-[#4f7c3c]"
@@ -117,7 +117,7 @@ export default function Landing() {
             >
               <img
                 src="/Idul Fitri.png"
-                className="w-full max-w-md md:w-96 drop-shadow-2xl"
+                className="w-full max-w-md md:w-96 drop-shadow-2xl -mt-18"
                 alt="Idul Fitri"
               />
             </motion.div>
