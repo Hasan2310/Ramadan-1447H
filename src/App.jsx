@@ -1,167 +1,130 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./App.css";
 
 export default function Landing() {
-  const [scene, setScene] = useState("moonHunt");
+
+  const [scene, setScene] = useState("input");
   const [name, setName] = useState("");
-  const [moonFound, setMoonFound] = useState(false);
-
-  // posisi bulan fix
-  const moonPos = { x: 500, y: 200 };
-
-  // cek jarak teropong vs bulan
-  const checkMoon = (x, y) => {
-    const centerX = x + 75; // radius / 2
-    const centerY = y + 75;
-    const distance = Math.hypot(centerX - moonPos.x, centerY - moonPos.y);
-    if (distance < 50 && !moonFound) {
-      setMoonFound(true);
-      setTimeout(() => setScene("intro"), 1200);
-    }
-  };
+  const [progress, setProgress] = useState(100);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (name.trim() !== "") setScene("greeting");
+    if (name.trim().length < 3) {
+      alert("Nama minimal 3 karakter!");
+      return;
+    }
+    setScene("greeting");
   };
 
+  useEffect(() => {
+    if (scene !== "greeting") return;
+
+    let time = 100;
+    const interval = setInterval(() => {
+      time -= 1;
+      setProgress(time);
+
+      if (time <= 0) {
+        clearInterval(interval);
+        setScene("eid");
+      }
+    }, 100);
+
+    return () => clearInterval(interval);
+  }, [scene]);
+
   return (
-    <section className="ramadan-bg relative h-screen overflow-hidden">
-      {/* Stars */}
-      <div>
-        <div className="star absolute top-10 left-6"></div>
-        <div className="star absolute top-24 right-20"></div>
-        <div className="star absolute top-40 left-1/2"></div>
-        <div className="star absolute top-32 left-1/3"></div>
-        <div className="star absolute top-60 right-1/3"></div>
-      </div>
+    <section
+      className="relative w-full h-[100dvh] overflow-hidden bg-cover bg-center flex items-center justify-center"
+      style={{ backgroundImage: "url('/Bg.jpg')" }}
+    >
+      <div className="absolute inset-0 flex mt-40 flex-col px-6 items-center">
 
-      {/* Family */}
-      <motion.img
-        src="/Keluarga.png"
-        alt="family greeting"
-        className={`absolute bottom-0 w-72 sm:w-96 md:w-[460px] -left-20 sm:-left-24 md:-left-32 ${
-          scene === "moonHunt" ? "opacity-20" : "opacity-100"
-        }`}
-        initial={{ x: -200, opacity: 0 }}
-        animate={{
-          x: 0,
-          opacity: scene === "moonHunt" ? 0.2 : 1,
-          y: [0, -8, 0],
-        }}
-        transition={{
-          duration: 1,
-          delay: 1.5,
-          y: { repeat: Infinity, duration: 4, ease: "easeInOut" },
-        }}
-      />
-
-      {/* Telescope / Circle */}
-      {scene === "moonHunt" && (
-        <motion.div
-          drag
-          dragConstraints={{ left: 0, top: 0, right: window.innerWidth - 150, bottom: window.innerHeight - 150 }}
-          dragElastic={0.2}
-          onDrag={(e, info) => checkMoon(info.point.x, info.point.y)}
-          className="absolute w-[150px] h-[150px] rounded-full border-4 border-white/70 overflow-hidden cursor-grab"
-          style={{ left: window.innerWidth / 2 - 75, top: window.innerHeight / 2 - 75 }}
-        >
-          {/* Bulan */}
-          <motion.div
-            initial={{ scale: 0 }}
-            animate={{ scale: moonFound ? 1.3 : 1 }}
-            transition={{ duration: 0.5, repeat: moonFound ? 4 : 0, repeatType: "reverse" }}
-            style={{
-              position: "absolute",
-              left: moonPos.x,
-              top: moonPos.y,
-              fontSize: "3rem",
-              filter: moonFound ? "drop-shadow(0 0 20px yellow)" : "none",
-            }}
-          >
-            🌙
-          </motion.div>
-
-          {/* Sparkle */}
-          {moonFound && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: [0, 1, 0], scale: [0.5, 1, 0.5] }}
-              transition={{ repeat: Infinity, duration: 0.8 }}
-              style={{
-                position: "absolute",
-                left: moonPos.x + 10,
-                top: moonPos.y - 10,
-                fontSize: "1.2rem",
-              }}
-            >
-              ✨
-            </motion.div>
-          )}
-        </motion.div>
-      )}
-
-      {/* Center Content */}
-      <div className="flex h-full items-center justify-center flex-col px-6 text-center z-10 relative">
         <AnimatePresence mode="wait">
-          {scene === "intro" && (
-            <motion.div
-              key="intro"
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -40 }}
-              transition={{ duration: 0.8 }}
-            >
-              <h1 className="ramadan-title text-3xl sm:text-5xl">Marhaban Ya Ramadan</h1>
-              <p className="ramadan-subtitle text-sm sm:text-lg mt-2">Sambut bulan penuh berkah</p>
-              <button
-                onClick={() => setScene("input")}
-                className="mt-4 px-6 py-3 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 text-yellow-300 font-semibold hover:bg-white/20 transition duration-300"
-              >
-                Lanjut
-              </button>
-            </motion.div>
-          )}
 
+          {/* INPUT */}
           {scene === "input" && (
             <motion.form
               key="input"
               onSubmit={handleSubmit}
               initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0 }}
-              className="flex flex-col gap-6 items-center mt-4"
+              exit={{ opacity: 0, y: -40 }}
+              transition={{ duration: 0.7, ease: "easeOut" }}
+              className="w-full max-w-sm p-10 bg-white/30 backdrop-blur-xl rounded-[35px] shadow-2xl flex flex-col items-center"
             >
-              <h2 className="text-xl sm:text-2xl font-semibold">Masukkan nama kamu</h2>
+              <h2 className="text-3xl tracking-wide font-bold text-[#2a4259] mb-6">
+                SIAPA NAMAMU?
+              </h2>
               <input
+                autoFocus
                 type="text"
-                placeholder="Nama kamu..."
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="bg-white/10 backdrop-blur-md border border-white/20 rounded-xl px-5 py-3 text-center text-white placeholder-white/60 w-64 outline-none focus:border-yellow-300 transition"
+                placeholder="Tulis nama kamu..."
+                className="w-full bg-white/50 border-b-2 border-blue-600 p-3 text-center text-xl outline-none text-[#2a4259] rounded-lg"
               />
-              <button className="mt-2 px-6 py-3 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 text-yellow-300 font-semibold hover:bg-white/20 hover:scale-105 transition duration-300 shadow-lg">
-                Lihat Ucapan
+
+              <button
+                type="submit"
+                disabled={name.trim().length < 3}
+                className={`mt-10 w-full py-3 rounded-full font-semibold tracking-widest transition
+                  ${name.trim().length < 3
+                    ? 'bg-gray-400 cursor-not-allowed text-gray-200'
+                    : 'bg-[#2e495b] text-white hover:scale-105'}`}
+              >
+                LANJUT
               </button>
             </motion.form>
           )}
 
+          {/* UCAPAN */}
           {scene === "greeting" && (
             <motion.div
               key="greeting"
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              className="bg-white/10 backdrop-blur-md p-8 rounded-3xl max-w-md text-center text-white"
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
+              className="max-w-md p-8 bg-white/40 backdrop-blur-xl rounded-[35px] shadow-2xl"
             >
-              <h2 className="text-2xl font-semibold mb-4">Assalamu'alaikum {name} 🌙</h2>
-              <p className="leading-relaxed text-sm sm:text-base">
-                Maafin aku ya {name} kalau selama ini ada salah kata ataupun sikap. Semoga Ramadan kali ini membawa keberkahan, kedamaian, dan hati yang lebih tenang.
+              <h2 className="text-2xl md:text-3xl font-bold text-[#2a4259] mb-4">
+                Happy Eid 1447 H, {name}!
+              </h2>
+              <p className="text-[#2a4259] text-lg leading-relaxed mb-6">
+                Maafin ya kalau ada kata-kata yang nggak sengaja bikin baper. Moga-moga amal kita diterima ya!
               </p>
-              <p className="mt-6 text-yellow-300 font-medium">Selamat menunaikan ibadah puasa</p>
+
+              <div className="w-full h-2 bg-white/40 rounded-full overflow-hidden">
+                <motion.div
+                  className="h-full bg-[#4f7c3c]"
+                  animate={{ width: `${progress}%` }}
+                  transition={{ ease: "linear", duration: 0.1 }}
+                />
+              </div>
             </motion.div>
           )}
+
+          {/* IDUL FITRI */}
+          {scene === "eid" && (
+            <motion.div
+              key="eid"
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 1, ease: "easeOut" }}
+              className="flex flex-col items-center"
+            >
+              <img
+                src="/Idul Fitri.png"
+                className="w-full max-w-md md:w-96 -mt-10"
+                alt="Idul Fitri"
+              />
+            </motion.div>
+          )}
+
         </AnimatePresence>
+
       </div>
     </section>
   );
