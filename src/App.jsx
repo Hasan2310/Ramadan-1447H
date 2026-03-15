@@ -117,7 +117,7 @@ export default function Landing() {
             >
               <img
                 src="/Idul Fitri.png"
-                className="w-full max-w-md md:w-96 drop-shadow-2xl -mt-15"
+                className="w-full max-w-md md:w-96 drop-shadow-2xl -mt-13"
                 alt="Idul Fitri"
               />
             </motion.div>
