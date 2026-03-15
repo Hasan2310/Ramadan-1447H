@@ -3,10 +3,8 @@ import { useState, useEffect } from "react";
 import "./App.css";
 
 export default function Landing() {
-
   const [scene, setScene] = useState("input");
   const [name, setName] = useState("");
-  const [progress, setProgress] = useState(100);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -17,21 +15,14 @@ export default function Landing() {
     setScene("greeting");
   };
 
+  // Pindah ke scene eid setelah 8 detik
   useEffect(() => {
-    if (scene !== "greeting") return;
-
-    let time = 100;
-    const interval = setInterval(() => {
-      time -= 1;
-      setProgress(time);
-
-      if (time <= 0) {
-        clearInterval(interval);
+    if (scene === "greeting") {
+      const timer = setTimeout(() => {
         setScene("eid");
-      }
-    }, 100);
-
-    return () => clearInterval(interval);
+      }, 8000); // 8 detik
+      return () => clearTimeout(timer);
+    }
   }, [scene]);
 
   return (
@@ -40,10 +31,9 @@ export default function Landing() {
       style={{ backgroundImage: "url('/Bg.jpg')" }}
     >
       <div className="absolute inset-0 flex mt-40 flex-col px-6 items-center">
-
         <AnimatePresence mode="wait">
 
-          {/* INPUT */}
+          {/* SCENE 1: INPUT */}
           {scene === "input" && (
             <motion.form
               key="input"
@@ -54,8 +44,8 @@ export default function Landing() {
               transition={{ duration: 0.7, ease: "easeOut" }}
               className="w-full max-w-sm p-10 bg-white/30 backdrop-blur-xl rounded-[35px] shadow-2xl flex flex-col items-center"
             >
-              <h2 className="text-3xl tracking-wide font-bold text-[#2a4259] mb-6">
-                SIAPA NAMAMU?
+              <h2 className="text-3xl tracking-wide font-bold text-[#2a4259] mb-6 uppercase text-center">
+                Siapa Namamu?
               </h2>
               <input
                 autoFocus
@@ -63,7 +53,7 @@ export default function Landing() {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="Tulis nama kamu..."
-                className="w-full bg-white/50 border-b-2 border-blue-600 p-3 text-center text-xl outline-none text-[#2a4259] rounded-lg"
+                className="w-full bg-white/50 border-b-2 border-blue-600 p-3 text-center text-xl outline-none text-[#2a4259] rounded-lg placeholder:text-gray-500"
               />
 
               <button
@@ -72,22 +62,22 @@ export default function Landing() {
                 className={`mt-10 w-full py-3 rounded-full font-semibold tracking-widest transition
                   ${name.trim().length < 3
                     ? 'bg-gray-400 cursor-not-allowed text-gray-200'
-                    : 'bg-[#2e495b] text-white hover:scale-105'}`}
+                    : 'bg-[#2e495b] text-white hover:scale-105 active:scale-95 shadow-lg'}`}
               >
                 LANJUT
               </button>
             </motion.form>
           )}
 
-          {/* UCAPAN */}
+          {/* SCENE 2: UCAPAN + PROGRESS BAR */}
           {scene === "greeting" && (
             <motion.div
               key="greeting"
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              exit={{ opacity: 0 }}
+              exit={{ opacity: 0, scale: 1.1 }}
               transition={{ duration: 0.8, ease: "easeOut" }}
-              className="max-w-md p-8 bg-white/40 backdrop-blur-xl rounded-[35px] shadow-2xl"
+              className="max-w-md w-full p-8 bg-white/40 backdrop-blur-xl rounded-[35px] shadow-2xl text-center"
             >
               <h2 className="text-2xl md:text-3xl font-bold text-[#2a4259] mb-4">
                 Happy Eid 1447 H, {name}!
@@ -96,35 +86,44 @@ export default function Landing() {
                 Maafin ya kalau ada kata-kata yang nggak sengaja bikin baper. Moga-moga amal kita diterima ya!
               </p>
 
-              <div className="w-full h-2 bg-white/40 rounded-full overflow-hidden">
+              {/* PROGRESS BAR CONTAINER */}
+              <div className="w-full h-3 bg-white/30 rounded-full overflow-hidden mt-4 shadow-inner">
+                {/* ANIMASI PROGRESS */}
                 <motion.div
+                  initial={{ width: "100%" }}
+                  animate={{ width: "0%" }}
+                  transition={{ 
+                    duration: 8, // Durasi 8 detik
+                    ease: "linear" // Wajib linear supaya pergerakannya konstan/smooth
+                  }}
                   className="h-full bg-[#4f7c3c]"
-                  animate={{ width: `${progress}%` }}
-                  transition={{ ease: "linear", duration: 0.1 }}
                 />
               </div>
             </motion.div>
           )}
 
-          {/* IDUL FITRI */}
+          {/* SCENE 3: IDUL FITRI IMAGE */}
           {scene === "eid" && (
             <motion.div
               key="eid"
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 1, ease: "easeOut" }}
+              initial={{ opacity: 0, scale: 0.5, rotate: -5 }}
+              animate={{ opacity: 1, scale: 1, rotate: 0 }}
+              transition={{ 
+                type: "spring",
+                stiffness: 100,
+                damping: 15
+              }}
               className="flex flex-col items-center"
             >
               <img
                 src="/Idul Fitri.png"
-                className="w-full max-w-md md:w-96 -mt-10"
+                className="w-full max-w-md md:w-96 drop-shadow-2xl"
                 alt="Idul Fitri"
               />
             </motion.div>
           )}
 
         </AnimatePresence>
-
       </div>
     </section>
   );
