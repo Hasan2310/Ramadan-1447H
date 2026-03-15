@@ -77,7 +77,7 @@ export default function Landing() {
               animate={{ scale: 1, opacity: 1 }}
               exit={{ opacity: 0, scale: 1.1 }}
               transition={{ duration: 0.8, ease: "easeOut" }}
-              className="max-w-md w-full p-8 bg-white/40 backdrop-blur-xl rounded-[35px] shadow-2xl text-center"
+              className="max-w-md w-full p-8 bg-white/40 backdrop-blur-xl rounded-[35px] shadow-2xl text-left"
             >
               <h2 className="text-2xl md:text-3xl font-bold text-[#2a4259] mb-4">
                 Happy Eid 1447 H, {name}!
@@ -117,7 +117,7 @@ export default function Landing() {
             >
               <img
                 src="/Idul Fitri.png"
-                className="w-full max-w-md md:w-96 drop-shadow-2xl -mt-18"
+                className="w-full max-w-md md:w-96 drop-shadow-2xl -mt-15"
                 alt="Idul Fitri"
               />
             </motion.div>
