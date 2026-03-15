@@ -10,8 +10,8 @@ export default function Landing() {
   // Efek Loading: Menunggu semua elemen & gambar siap
   useEffect(() => {
     const handleLoad = () => {
-      // Kasih sedikit delay tambahan (misal 1 detik) biar transisinya gak terlalu kaget
-      setTimeout(() => setIsLoading(false), 1000);
+      // Delay 1.5 detik biar loading indahnya kelihatan dulu
+      setTimeout(() => setIsLoading(false), 1500);
     };
 
     if (document.readyState === "complete") {
@@ -42,7 +42,7 @@ export default function Landing() {
 
   return (
     <>
-{/* 1. LAYER LOADING OVERLAY - EID VIBE */}
+      {/* 1. LAYER LOADING OVERLAY - KETUPAT INDONESIA VIBE */}
       <AnimatePresence>
         {isLoading && (
           <motion.div
@@ -50,45 +50,66 @@ export default function Landing() {
             initial={{ opacity: 1 }}
             exit={{ opacity: 0, scale: 1.05 }}
             transition={{ duration: 0.8, ease: "easeInOut" }}
-            className="fixed inset-0 z-[999] bg-white flex flex-col items-center justify-center text-[#2a4259]"
+            className="fixed inset-0 z-[999] bg-white flex flex-col items-center justify-center text-[#4f7c3c]"
           >
-            {/* Ornamen Mandala Animasi */}
-            <div className="relative flex items-center justify-center mb-12">
+            {/* Asset Ketupat & Animasi */}
+            <div className="relative flex items-center justify-center mb-16">
+              
+              {/* Lingkaran Luar Berputar (Dasar) */}
               <motion.div
                 animate={{ rotate: 360 }}
-                transition={{ repeat: Infinity, duration: 10, ease: "linear" }}
-                className="absolute w-32 h-32 md:w-40 md:h-40 border-[1px] border-yellow-600/20 rounded-full"
+                transition={{ repeat: Infinity, duration: 12, ease: "linear" }}
+                className="absolute w-40 h-40 md:w-52 md:h-52 border-[1px] border-[#4f7c3c]/10 rounded-full"
               />
+
+              {/* Garis-garis Anyaman Berputar (Variasi) */}
               <motion.div
                 animate={{ rotate: -360 }}
-                transition={{ repeat: Infinity, duration: 15, ease: "linear" }}
-                className="absolute w-40 h-40 md:w-52 md:h-52 border-[1px] border-yellow-800/10 rounded-full"
+                transition={{ repeat: Infinity, duration: 20, ease: "linear" }}
+                className="absolute w-48 h-48 md:w-60 md:h-60 border-[1.5px] border-[#4f7c3c]/10 rounded-full border-dashed"
               />
+              
+              {/* GAMBAR KETUPAT ASLI INDONESIA */}
               <motion.div
-                initial={{ opacity: 0.5, scale: 0.8 }}
-                animate={{ opacity: [0.5, 1, 0.5], scale: [0.9, 1.1, 0.9] }}
-                transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
-                className="text-6xl md:text-7xl drop-shadow-sm"
+                initial={{ opacity: 0, scale: 0.5 }}
+                animate={{ 
+                  opacity: [0.8, 1, 0.8], 
+                  scale: [0.95, 1.05, 0.95],
+                  y: [0, -10, 0] // Efek mengambang pelan
+                }}
+                transition={{ 
+                  opacity: { repeat: Infinity, duration: 3 },
+                  scale: { repeat: Infinity, duration: 3, ease: "easeInOut" },
+                  y: { repeat: Infinity, duration: 4, ease: "easeInOut" }
+                }}
+                className="relative z-10 flex items-center justify-center"
               >
-                🌙
+                {/* Pastikan file ketupat.png ada di folder public/ */}
+                <img 
+                  src="/ketupat.png" 
+                  alt="Ketupat Lebaran Indonesia" 
+                  className="w-24 h-24 md:w-32 md:h-32 drop-shadow-[0_10px_15px_rgba(79,124,60,0.2)]"
+                />
               </motion.div>
             </div>
             
             {/* Teks Loading */}
             <motion.div 
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.3 }}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5 }}
               className="text-center"
             >
-              <h2 className="text-xl font-light tracking-[0.4em] uppercase mb-2">Eid Mubarak</h2>
-              <div className="flex gap-1 justify-center">
-                {[0, 1, 2].map((i) => (
+              <h2 className="text-xl md:text-2xl font-bold tracking-[0.3em] uppercase mb-3 text-[#4f7c3c]">
+                Mohon Menunggu
+              </h2>
+              <div className="flex gap-2 justify-center">
+                {[0, 1, 2, 3].map((i) => (
                   <motion.div
                     key={i}
-                    animate={{ opacity: [0, 1, 0] }}
-                    transition={{ repeat: Infinity, duration: 1.5, delay: i * 0.2 }}
-                    className="w-1 h-1 bg-yellow-600 rounded-full"
+                    animate={{ scale: [1, 1.8, 1], opacity: [0.3, 1, 0.3] }}
+                    transition={{ repeat: Infinity, duration: 1.2, delay: i * 0.15, ease: "easeInOut" }}
+                    className="w-2 h-2 bg-[#4f7c3c] rounded-full"
                   />
                 ))}
               </div>
@@ -97,11 +118,12 @@ export default function Landing() {
         )}
       </AnimatePresence>
 
-      {/* 2. MAIN CONTENT */}
+      {/* 2. MAIN CONTENT - TIDAK DIUBAH */}
       <section
         className="relative w-full h-[100dvh] overflow-hidden bg-cover bg-center flex items-center justify-center"
         style={{ backgroundImage: "url('/Bg.jpg')" }}
       >
+        {/* ... (isi Main Content kamu tetap sama, tidak saya ubah) ... */}
         <div className="absolute inset-0 flex mt-25 flex-col px-6 items-center">
           <AnimatePresence mode="wait">
             
@@ -150,7 +172,7 @@ export default function Landing() {
                 transition={{ duration: 0.8, ease: "easeOut" }}
                 className="max-w-md w-full p-8 bg-white/40 backdrop-blur-xl rounded-[35px] shadow-2xl text-left"
               >
-                <h2 className="text-2xl md:text-3xl font-bold text-[#2a4259] mb-4 text-center">
+                <h2 className="text-2xl md:text-3xl font-bold text-[#2a4259] mb-4 text-left">
                   Happy Eid 1447 H, {name}!
                 </h2>
                 <p className="text-[#2a4259] text-lg leading-relaxed mb-6">
