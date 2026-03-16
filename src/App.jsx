@@ -96,9 +96,10 @@ export default function Landing() {
                 initial={{ scale: 0.95, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 exit={{ opacity: 0, y: -10 }}
-                className="relative max-w-md w-full p-10 bg-white/40 backdrop-blur-2xl rounded-[35px] shadow-2xl overflow-hidden"
+                /* Tambahin border tipis di container utama agar progress bar menyatu */
+                className="relative max-w-md w-full p-10 bg-white/40 backdrop-blur-2xl rounded-[35px] shadow-2xl overflow-hidden border border-white/20"
               >
-                <div className="relative z-10">
+                <div className="relative z-10 mb-2">
                   <h2 className="text-2xl md:text-3xl font-bold text-[#2a4259] mb-4 text-left">
                     Happy Eid 1447 H, {name}!
                   </h2>
@@ -107,18 +108,19 @@ export default function Landing() {
                   </p>
                 </div>
 
-                {/* Minimalist Progress Bar (Border Bottom Style) */}
-                <div className="absolute bottom-0 left-0 w-full h-[2px] bg-slate-200/30">
+                {/* Elegant Integrated Progress Line */}
+                {/* Kita taruh di paling bawah, menempel pada lekukan border */}
+                <div className="absolute bottom-0 left-0 w-full h-[3px] bg-slate-200/10">
                   <motion.div
                     initial={{ width: "100%" }}
                     animate={{ width: "0%" }}
                     transition={{ duration: 8, ease: "linear" }}
-                    className="h-full bg-[#4f7c3c]/30" // Hijau yang sangat soft agar tidak distract
+                    /* Pakai gradien halus biar nggak kelihatan 'potong' banget */
+                    className="h-full bg-gradient-to-r from-transparent via-[#2a4259]/20 to-transparent"
                   />
                 </div>
               </motion.div>
             )}
-
             {/* SCENE 3: EID FINAL + SOSMED TAGS */}
             {scene === "eid" && (
               <motion.div
